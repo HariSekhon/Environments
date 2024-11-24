@@ -1,6 +1,6 @@
 #
 #  Author: Hari Sekhon
-#  Date: 2016-01-17 12:56:53 +0000 (Sun, 17 Jan 2016)
+#  Date: 2024-11-25 01:37:51 +0700 (Mon, 25 Nov 2024)
 #
 #  vim:ts=4:sts=4:sw=4:noet
 #
@@ -10,27 +10,6 @@
 #
 #  https://www.linkedin.com/in/HariSekhon
 #
-
-# ===================
-# bootstrap commands:
-
-# setup/bootstrap.sh
-#
-# OR
-#
-# Alpine:
-#
-#   apk add --no-cache git make && git clone https://github.com/HariSekhon/Environments repo && cd repo && make
-#
-# Debian / Ubuntu:
-#
-#   apt-get update && apt-get install -y make git && git clone https://github.com/HariSekhon/Environments repo && cd repo && make
-#
-# RHEL / CentOS:
-#
-#   yum install -y make git && git clone https://github.com/HariSekhon/Environments repo && cd repo && make
-
-# ===================
 
 ifneq ("$(wildcard bash-tools/Makefile.in)", "")
 	include bash-tools/Makefile.in
@@ -42,20 +21,12 @@ CODE_FILES := $(shell git ls-files | grep -E -e '\.sh$$' -e '\.py$$' | sort)
 
 .PHONY: build
 build: init
-	@echo ================
-	@echo Environments Builds
-	@echo ================
+	@echo ==================
+	@echo Environments Build
+	@echo ==================
 	@$(MAKE) git-summary
 	@echo
-	# defer via external sub-call, otherwise will result in error like
-	# make: *** No rule to make target 'python-version', needed by 'build'.  Stop.
-	@$(MAKE) python-version
-
-	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
-	$(MAKE) system-packages-python
-
-	# TODO: uncomment if adding requirements.txt with pip modules
-	#$(MAKE) python
+	bash-tools/packages/install_packages.sh direnv
 
 .PHONY: init
 init:
@@ -68,18 +39,10 @@ init:
 install: build
 	@:
 
-.PHONY: python
-python:
-	@PIP=$(PIP) PIP_OPTS="--ignore-installed" bash-tools/python/python_pip_install_if_absent.sh requirements.txt
-	@echo
-	$(MAKE) pycompile
-	@echo
-	@echo 'BUILD SUCCESSFUL (Environments)'
-
 .PHONY: test
 test:
 	bash-tools/checks/check_all.sh
 
-.PHONY: clean
-clean:
-	@rm -fv -- *.pyc *.pyo
+#.PHONY: clean
+#clean:
+#    @rm -fv -- *.pyc *.pyo
