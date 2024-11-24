@@ -39,6 +39,17 @@ init:
 install: build
 	@:
 
+.PHONY: allow
+allow:
+	find . -type f -name .envrc | \
+	grep -v bash-tools | \
+	sed 's/[^/]*$$//' | \
+	while read -r dir; do \
+		pushd "$$dir" && \
+		direnv allow && \
+		popd; \
+	done
+
 .PHONY: test
 test:
 	bash-tools/checks/check_all.sh
