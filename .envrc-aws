@@ -41,9 +41,36 @@ set -euo pipefail
 [ -n "${DEBUG:-}" ] && set -x
 srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+if [ -n "${CI:-}" ]; then
+    exit 0
+fi
+
+root_config="$PWD/configs.ini"
+
+if [ -f "$root_config" ]; then
+    export AWS_CONFIG_FILE="$root_config"
+fi
+
+export HOME="${HOME:-$(cd; pwd)}"
+
+local_config="$PWD/config.ini"
+aws_config="${AWS_CONFIG_FILE:-$HOME/.aws/config}"
+
 # XXX: Edit - crucial to set to the right environment, the rest of the inferred settings below depend on this
-if [ -z "${CI:-}" ]; then
-    export AWS_PROFILE="default"
+if [ -n "${AWS_PROFILE:-}" ]; then
+
+    if [ -f "$local_config" ]; then
+        if grep -Eq "^[[:space:]]*\[profile[[:space:]]+$AWS_PROFILE\]" "$local_config"; then
+            if ! grep -Eq "^[[:space:]]*\[profile[[:space:]]+$AWS_PROFILE\]" "$aws_config"; then
+                echo
+                echo "Profile '$AWS_PROFILE' not found in '$aws_config'"
+                echo
+                echo "Adding contents of '$local_config' to '$aws_config'"
+                cat "$local_config" >> "$aws_config"
+                echo
+            fi
+        fi
+    fi
 
     aws configure list 2>/dev/null || :
     echo
@@ -54,12 +81,14 @@ if [ -z "${CI:-}" ]; then
     # - if found then do an automatic 'aws sso login'
     #
     if ! aws sts get-caller-identity --output table; then
-        # assumes you're not putting a blank line until the next section block
-        #if sed -n "/profile.*$AWS_PROFILE/,/^[[:space:]]*$/p" ~/.aws/config | grep -q sso_start_url; then
-        # goes until the next [profile ...] section instead, should be more reliable
-        if sed -n "/profile.*$AWS_PROFILE/,/^[[:space:]]*\[.+\]/p" ~/.aws/config | grep -q sso_start_url; then
-            echo
-            aws sso login
+        if [ -z "${AWS_NO_AUTOLOGIN:-}" ]; then
+            # assumes you're not putting a blank line until the next section block
+            #if sed -n "/profile.*$AWS_PROFILE/,/^[[:space:]]*$/p" ~/.aws/config | grep -q sso_start_url; then
+            # goes until the next [profile ...] section instead, should be more reliable
+            if sed -n "/profile.*$AWS_PROFILE/,/^[[:space:]]*\[.+\]/p" ~/.aws/config | grep -q sso_start_url; then
+                echo
+                aws sso login
+            fi
         fi
     fi
     echo
@@ -74,12 +103,14 @@ AWS_ACCOUNT_ID="$(
 )"
 echo "AWS Account ID: $AWS_ACCOUNT_ID"
 export AWS_ACCOUNT_ID
+echo
 
 # might not have permissions to the Organizations in which case this will error instead of return
 AWS_ACCOUNT="$(aws organizations describe-account --account-id "$AWS_ACCOUNT_ID" 2>/dev/null)"
 if [ -n "$AWS_ACCOUNT" ]; then
     echo "AWS Account: $AWS_ACCOUNT"
     export AWS_ACCOUNT
+    echo
 fi
 
 AWS_DEFAULT_REGION="$(aws configure get region || :)"  # use region configured in profile by default
