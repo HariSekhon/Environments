@@ -2,7 +2,7 @@
 
 Set up [direnv](https://github.com/HariSekhon/Knowledge-Base/blob/main/direnv.md)
 and then `cd` to these directories to automatically configure
-your `AWS_PROFILE` and EKS kubectl context.
+your `AWS_PROFILE` and EKS `kubectl` context.
 
 Also automatically calls:
 
