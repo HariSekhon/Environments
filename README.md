@@ -49,6 +49,31 @@
 
 ## Environments
 
+### Setup
+
+Edit the `<cloud>/<environment>/.envrc` files with the profile names and other settings for your environments:
+
+```shell
+$EDITOR aws/dev/.envrc
+```
+
+Install [direnv](https://github.com/HariSekhon/Knowledge-Base/blob/main/direnv.md)
+and approve the `.envrc` files in just one command:
+
+```shell
+make
+```
+
+Then just `cd` into these directories:
+
+```shell
+cd aws/dev
+```
+
+to automatically configure your cloud environment CLI settings,
+including switching your `kubectl` context to the right Kubernetes cluster.
+
+See [aws/README.md](aws/README.md) or [gcp/README.md](gcp/README.md) for more cloud specific information.
 
 ## More Core Repos
 
