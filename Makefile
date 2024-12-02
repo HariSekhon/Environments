@@ -45,13 +45,11 @@ install: build
 
 .PHONY: allow
 allow:
-	find . -type f -name .envrc | \
-	grep -v bash-tools | \
-	sed 's/[^/]*$$//' | \
-	while read -r dir; do \
-		pushd "$$dir" && \
-		direnv allow && \
-		popd; \
+	@find . -type f -name .envrc | \
+	sed '/bash-tools/d' | \
+	while read -r path; do \
+		echo "Approving: $$path" && \
+		direnv allow "$$path"; \
 	done
 
 .PHONY: test
