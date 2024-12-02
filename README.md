@@ -54,7 +54,7 @@
 Edit the `<cloud>/<environment>/.envrc` files with the profile names and other settings for your environments:
 
 ```shell
-$EDITOR aws/dev/.envrc
+"$EDITOR" aws/dev/.envrc
 ```
 
 Install [direnv](https://github.com/HariSekhon/Knowledge-Base/blob/main/direnv.md)
