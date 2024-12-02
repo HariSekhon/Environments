@@ -19,6 +19,10 @@ REPO := HariSekhon/Environments
 
 CODE_FILES := $(shell git ls-files | grep -E -e '\.sh$$' -e '\.py$$' | sort)
 
+.PHONY: default
+default: build
+	$(MAKE) allow
+
 .PHONY: build
 build: init
 	@echo ==================
@@ -26,7 +30,7 @@ build: init
 	@echo ==================
 	@$(MAKE) git-summary
 	@echo
-	bash-tools/packages/install_packages.sh direnv
+	bash-tools/packages/install_packages_if_absent.sh direnv
 
 .PHONY: init
 init:
