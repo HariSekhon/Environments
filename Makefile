@@ -19,8 +19,8 @@ REPO := HariSekhon/Environments
 
 CODE_FILES := $(shell git ls-files | grep -E -e '\.sh$$' -e '\.py$$' | sort)
 
-.PHONY: main
-main: build
+.PHONY: default
+default: build
 	$(MAKE) allow
 
 .PHONY: build
