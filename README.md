@@ -75,6 +75,20 @@ including switching your `kubectl` context to the right Kubernetes cluster.
 
 See [aws/README.md](aws/README.md) or [gcp/README.md](gcp/README.md) for more cloud specific information.
 
+For subsequent changes you can do an individual:
+
+```shell
+direnv allow  # path/to/.envrc - defaults to $PWD/.envrc
+```
+
+Or run from the top level directory:
+
+```shell
+make allow
+```
+
+to `direnv allow` all the `.envrc` found in this repo.
+
 ## More Core Repos
 
 <!-- OTHER_REPOS_START -->
