@@ -75,13 +75,15 @@ including switching your `kubectl` context to the right Kubernetes cluster.
 
 See [aws/README.md](aws/README.md) or [gcp/README.md](gcp/README.md) for more cloud specific information.
 
-For subsequent changes you can do an individual:
+Changes to a `$PWD/.envrc` require:
 
 ```shell
 direnv allow  # path/to/.envrc - defaults to $PWD/.envrc
 ```
 
-Or run from the top level directory:
+approval for safety.
+
+Or you can run from the top level directory:
 
 ```shell
 make allow
