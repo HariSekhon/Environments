@@ -33,7 +33,7 @@ build: init
 	bash-tools/packages/install_packages_if_absent.sh direnv || \
 	bash-tools/install/install_direnv.sh
 	@echo
-	@echo "Remember to add this to your .bashrc and reload your shell for direnv to work:"
+	@echo "** Remember to add this to your .bashrc and reload your shell for direnv to work:"
 	@echo
 	@echo 'eval "$$(direnv hook bash)"'
 	@echo
