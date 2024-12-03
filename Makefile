@@ -19,8 +19,8 @@ REPO := HariSekhon/Environments
 
 CODE_FILES := $(shell git ls-files | grep -E -e '\.sh$$' -e '\.py$$' | sort)
 
-.PHONY: default
-default: build
+.PHONY: main
+main: build
 	$(MAKE) allow
 
 .PHONY: build
@@ -57,6 +57,11 @@ allow:
 		echo "Approving: $$path" && \
 		direnv allow "$$path"; \
 	done
+	@echo
+	@echo "** Remember to add this to your .bashrc and reload your shell for direnv to work:"
+	@echo
+	@echo 'eval "$$(direnv hook bash)"'
+	@echo
 
 .PHONY: test
 test:
