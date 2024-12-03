@@ -35,7 +35,7 @@ build: init
 	@echo
 	@echo "Remember to add this to your .bashrc and reload your shell for direnv to work:"
 	@echo
-	@echo 'eval "\$$(direnv hook bash)"'
+	@echo 'eval "$$(direnv hook bash)"'
 	@echo
 
 .PHONY: init
