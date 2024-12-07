@@ -53,6 +53,7 @@ install: build
 allow:
 	@find . -type f -name .envrc | \
 	sed '/bash-tools/d' | \
+	sort | \
 	while read -r path; do \
 		echo "Approving: $$path" && \
 		direnv allow "$$path"; \
