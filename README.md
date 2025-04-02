@@ -65,7 +65,7 @@
 
 ### Quick Setup
 
-Edit the `<cloud>/<environment>/.envrc` files with the profile names and other settings for your environments:
+Edit the `<cloud>/<environment>/.envrc` files with the profiles, regions, and other settings for your environments:
 
 ```shell
 "$EDITOR" aws/dev/.envrc
@@ -110,7 +110,8 @@ which will attempt to install the `direnv` using whatever your local package man
 
 #### Configure
 
-Edit the `<cloud>/<environment>/.envrc` files with the profile names and other settings for your environments:
+Edit the `<cloud>/<environment>/.envrc` files with the profile config names, regions, kubernetes cluster names and other
+settings for your environments:
 
 ```shell
 "$EDITOR" aws/dev/.envrc
