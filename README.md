@@ -50,7 +50,20 @@
 
 ## Environments
 
-### Setup
+<!-- INDEX_START -->
+
+- [Quick Setup](#quick-setup)
+- [Detailed Setup](#detailed-setup)
+  - [Install](#install)
+  - [Configure](#configure)
+  - [Approve](#approve)
+    - [Approve Individual `.envrc`](#approve-individual-envrc)
+    - [Approve all `.envrc`](#approve-all-envrc)
+- [Directory Structure](#directory-structure)
+
+<!-- INDEX_END -->
+
+### Quick Setup
 
 Edit the `<cloud>/<environment>/.envrc` files with the profile names and other settings for your environments:
 
@@ -58,39 +71,104 @@ Edit the `<cloud>/<environment>/.envrc` files with the profile names and other s
 "$EDITOR" aws/dev/.envrc
 ```
 
-Install [direnv](https://github.com/HariSekhon/Knowledge-Base/blob/main/direnv.md)
-and approve the `.envrc` files in just one command:
+Then just run `make` from the top level directory to install `direnv` and approve all the `.envrc` files:
 
 ```shell
 make
 ```
 
-Then just `cd` into these directories:
+Now whenever you `cd` into one of the `<cloud>/<environment>` directories it'll automatically:
+
+- configure your cloud CLI settings, such as your:
+  - AWS:
+    - profile
+    - region
+    - EKS Cluster
+  - GCP:
+    - project
+    - config configuration
+    - region (even different regions per service)
+    - GKE cluster
+- switch your `kubectl` context to the right Kubernetes cluster
+- any other environment variables you've specified, such as
+  - API keys for other services such as Cloudflare
+  - AWS or GCP Secret Manager keys that tools use to pull secrets from
+
+### Detailed Setup
+
+#### Install
+
+Install [direnv](https://github.com/HariSekhon/Knowledge-Base/blob/main/direnv.md).
+
+For convenience you can just run:
 
 ```shell
-cd aws/dev
+make install
 ```
 
-to automatically configure your cloud environment CLI settings,
-including switching your `kubectl` context to the right Kubernetes cluster.
+which will attempt to install the `direnv` using whatever your local package manager is, or fall back to a binary download.
+
+#### Configure
+
+Edit the `<cloud>/<environment>/.envrc` files with the profile names and other settings for your environments:
+
+```shell
+"$EDITOR" aws/dev/.envrc
+```
+
+#### Approve
+
+Changes to an `.envrc` require (re)approval for safety.
 
 See [aws/README.md](aws/README.md) or [gcp/README.md](gcp/README.md) for more cloud specific information.
 
-Changes to a `$PWD/.envrc` require:
+##### Approve Individual `.envrc`
+
+Approve the `$PWD/.envrc` changes in the current directory:
 
 ```shell
-direnv allow  # path/to/.envrc - defaults to $PWD/.envrc
+direnv allow
 ```
 
-approval for safety.
+Alternatively approve one at a different path:
 
-Or you can run from the top level directory:
+```shell
+direnv allow path/to/.envrc
+```
+
+##### Approve all `.envrc`
+
+To approve all `.envrc` under the current directory tree, run this from the top level directory of this repo:
 
 ```shell
 make allow
 ```
 
-to `direnv allow` all the `.envrc` found in this repo.
+to `direnv allow` all the `.envrc` found in this repo's directory tree.
+
+### Directory Structure
+
+```shell
+$ tree -a aws gcp
+aws
+├── .envrc
+├── README.md
+├── dev
+│   └── .envrc
+├── prod
+│   └── .envrc
+└── staging
+    └── .envrc
+    gcp
+    ├── .envrc
+    ├── README.md
+    ├── dev
+    │   └── .envrc
+    ├── prod
+    │   └── .envrc
+    └── staging
+        └── .envrc
+```
 
 ## More Core Repos
 
