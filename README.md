@@ -83,7 +83,7 @@ Now whenever you `cd` into one of the `<cloud>/<environment>` directories it'll 
   - AWS:
     - profile
     - region
-    - EKS Cluster
+    - EKS cluster
   - GCP:
     - project
     - config configuration
