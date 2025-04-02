@@ -90,7 +90,7 @@ Now whenever you `cd` into one of the `<cloud>/<environment>` directories it'll 
     - region (even different regions per service)
     - GKE cluster
 - switch your `kubectl` context to the right Kubernetes cluster
-- any other environment variables you've specified, such as
+- set any other environment variables you've specified, such as
   - API keys for other services such as Cloudflare
   - AWS or GCP Secret Manager keys that tools use to pull secrets from
 
