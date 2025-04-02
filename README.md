@@ -106,7 +106,7 @@ For convenience you can just run:
 make install
 ```
 
-which will attempt to install the `direnv` using whatever your local package manager is, or fall back to a binary download.
+which will attempt to install `direnv` using whatever your local package manager is, or fall back to binary download.
 
 #### Configure
 
